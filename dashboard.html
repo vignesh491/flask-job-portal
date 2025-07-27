@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Job Portal{% endblock %}
+
+{% block content %}
+    <h2>Dashboard</h2>
+
+    <h3>Your Posted Jobs</h3>
+    {% if user_jobs %}
+        <ul>
+        {% for job in user_jobs %}
+            <li>
+                <strong>{{ job.title }}</strong> - {{ job.location }} - {{ job.salary }}<br />
+                {{ job.description|truncate(100) }}<br />
+                Applicants: {{ job.applications|length }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't posted any jobs yet.</p>
+    {% endif %}
+
+    <h3>Jobs You Applied For</h3>
+    {% if user_apps %}
+        <ul>
+        {% for app in user_apps %}
+            <li>{{ app.job.title }} at {{ app.job.location }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't applied for any jobs yet.</p>
+    {% endif %}
+{% endblock %}

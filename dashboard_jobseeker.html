@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Job Seeker Dashboard - Job Portal{% endblock %}
+
+{% block content %}
+<h2>Jobs You've Applied For</h2>
+{% if user_apps %}
+<ul class="list-group">
+  {% for app in user_apps %}
+  <li class="list-group-item">{{ app.job.title }} - {{ app.job.location }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>You haven't applied for any jobs yet. <a href="{{ url_for('jobs') }}">Browse jobs</a>.</p>
+{% endif %}
+{% endblock %}

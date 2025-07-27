@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Job - Job Portal{% endblock %}
+
+{% block content %}
+<h2>Edit Job</h2>
+
+<form method="POST">
+  <div class="mb-3">
+    <label for="title" class="form-label">Job Title</label>
+    <input type="text" class="form-control" id="title" name="title" value="{{ job.title }}" required />
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea class="form-control" id="description" name="description" rows="4" required>{{ job.description }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label for="salary" class="form-label">Salary</label>
+    <input type="text" class="form-control" id="salary" name="salary" value="{{ job.salary or '' }}" />
+  </div>
+  <div class="mb-3">
+    <label for="location" class="form-label">Location</label>
+    <input type="text" class="form-control" id="location" name="location" value="{{ job.location or '' }}" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Update Job</button>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Job Portal{% endblock %}
+
+{% block content %}
+<h2>Admin Panel</h2>
+
+<h3>Users</h3>
+<table class="table table-bordered">
+  <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for user in users %}
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td>
+        {% if user.id != current_user.id %}
+        <form method="POST" action="{{ url_for('admin_delete_user', user_id=user.id) }}" onsubmit="return confirm('Delete user?');">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        {% else %}
+        (You)
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h3>Jobs</h3>
+<table class="table table-bordered">
+  <thead><tr><th>ID</th><th>Title</th><th>Location</th><th>Employer</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for job in jobs %}
+    <tr>
+      <td>{{ job.id }}</td>
+      <td>{{ job.title }}</td>
+      <td>{{ job.location }}</td>
+      <td>{{ job.employer.username if job.employer else 'Unknown' }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin_delete_job', job_id=job.id) }}" onsubmit="return confirm('Delete job?');">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Apply to Job - Job Portal{% endblock %}
+
+{% block content %}
+<h2>Apply to: {{ job.title }}</h2>
+<p><strong>Location:</strong> {{ job.location }}</p>
+<p><strong>Salary:</strong> {{ job.salary }}</p>
+<p>{{ job.description }}</p>
+
+<form method="POST">
+  <button type="submit" class="btn btn-success">Submit Application</button>
+  <a href="{{ url_for('jobs') }}" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+{% endblock %}

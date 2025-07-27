@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Job Listings - Job Portal{% endblock %}
+
+{% block content %}
+<h2>Job Listings</h2>
+<form method="GET" action="{{ url_for('jobs') }}" class="row g-3 mb-3 align-items-end">
+  <div class="col-md-3">
+    <label for="title" class="form-label">Job Title</label>
+    <input type="text" class="form-control" id="title" name="title" value="{{ filter_title }}">
+  </div>
+  <div class="col-md-2">
+    <label for="location" class="form-label">Location</label>
+    <input type="text" class="form-control" id="location" name="location" value="{{ filter_location }}">
+  </div>
+  <div class="col-md-3">
+    <label for="category" class="form-label">Category</label>
+    <input type="text" class="form-control" id="category" name="category" value="{{ filter_category }}">
+  </div>
+  <div class="col-md-2">
+    <label for="company" class="form-label">Company</label>
+    <input type="text" class="form-control" id="company" name="company" value="{{ filter_company }}">
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+  </div>
+</form>
+
+{% if jobs or external_jobs %}
+  <div class="row">
+    {% for job in jobs %}
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ job.title }}</h5>
+          <p class="mb-1"><strong>Company:</strong> {{ job.company or 'N/A' }}</p>
+          <p class="mb-1"><strong>Category:</strong> {{ job.category or 'N/A' }}</p>
+          <p class="mb-1"><strong>Location:</strong> {{ job.location or 'N/A' }}</p>
+          <p><strong>Salary:</strong> {{ job.salary or 'N/A' }}</p>
+          {% if current_user.is_authenticated and current_user.is_jobseeker() %}
+            <a href="{{ url_for('apply', job_id=job.id) }}" class="btn btn-primary">Apply</a>
+          {% else %}
+            <small><em>Login as jobseeker to apply</em></small>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    {% for job in external_jobs %}
+    <div class="col-md-6 mb-3">
+      <div class="card border-secondary">
+        <div class="card-body">
+          <h5 class="card-title">{{ job.title }} <span class="badge bg-secondary">External</span></h5>
+          <p class="card-text">{{ job.description[:200] }}{% if job.description|length > 200 %}...{% endif %}</p>
+          <p><strong>Salary:</strong> {{ job.salary }}</p>
+          <p><strong>Location:</strong> {{ job.location }}</p>
+          <a href="{{ job.url }}" target="_blank" class="btn btn-outline-secondary">View External Job</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No jobs found matching your criteria.</p>
+{% endif %}
+{% endblock %}
